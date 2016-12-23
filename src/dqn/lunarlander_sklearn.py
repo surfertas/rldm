@@ -1,3 +1,9 @@
+# OpenGym LunarLander-v2
+# DQN w/ Priority Replay
+# Author: Tasuku Miura
+# Date: 2016.12.22
+#
+# -----------------------------------
 import numpy as np
 import random
 from collections import deque
