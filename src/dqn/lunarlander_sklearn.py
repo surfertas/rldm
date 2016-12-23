@@ -1,5 +1,5 @@
 # OpenGym LunarLander-v2
-# DQN w/ Priority Replay
+# DQN w/ Experience Replay
 # Author: Tasuku Miura
 # Date: 2016.12.22
 #
