@@ -1,4 +1,4 @@
-# OpenGym LunarLander-v2
+# OpenGym LunarLander-v2 (discrete action, continuous state)
 # DQN w/ Experience Replay
 # Author: Tasuku Miura
 # Date: 2016.12.22
@@ -33,7 +33,7 @@ class AGENT(object):
         self._BATCH_SIZE = 128
         self._REPLAY = 4
         self._memory = deque()
-        self._first_experiences= deque()
+        self._first_experiences = deque()
         self._accum_rewards = 0.
         self.epsilon = 1.0
         self.returns_history = []
@@ -60,7 +60,7 @@ class AGENT(object):
         if (np.random.random() < self.epsilon) or self.explore: 
             a = env.action_space.sample()
         else:
-            a = np.argmax(np.array(Q))       
+            a = np.argmax(Q)       
 
         return a
           
