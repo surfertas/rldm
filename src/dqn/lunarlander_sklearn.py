@@ -1,5 +1,5 @@
 # OpenGym LunarLander-v2 (discrete action, continuous state)
-# DQN w/ Experience Replay
+# Q-NN w/ Experience Replay
 # Author: Tasuku Miura
 # Date: 2016.12.22
 #
