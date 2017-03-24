@@ -1,13 +1,13 @@
 # Work related to CS294-112 HW 1: Imitation Learning
 
 # Dependencies: 
-TensorFlow
-MuJoCo version 1.31
-OpenAI Gym
+- TensorFlow
+- MuJoCo version 1.31
+- OpenAI Gym
 
 # Usage
-1. Create directories, /logs, /rollouts.
-1. Generate expert rollouts
+- Create directories, /logs, /rollouts.
+- Generate expert rollouts
  
 $ ./runexpert.sh
 
@@ -15,7 +15,7 @@ Will run `run_expert.py` for rollouts of 5,10,20,40,100 for the Humanoid-v1
 environment. The rollouts will be stored in directory /rollouts, thus make sure
 to create the directory before running.
 
-1. Clone based on samples from expert policy.
+- Clone based on samples from expert policy.
 
 $ ./runclone.sh
 
@@ -37,12 +37,10 @@ In `experts/`, the provided expert policies are:
 * Walker2d-v1.pkl
 
 The name of the pickle file corresponds to the name of the gym environment.
-~
-
 
 To solve the assignment, the following were created.
-3. bc_util.py
-3. bc_callbacks.py
-3. behave_clone.py
-3. runexpert.sh
-3. runclone.sh
+- bc_util.py
+- bc_callbacks.py
+- behave_clone.py
+- runexpert.sh
+- runclone.sh
