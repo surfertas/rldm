@@ -26,10 +26,11 @@ from bc_callbacks import CloneStats
 seed = 777
 np.random.seed(seed)
 
+
 def base_model(input_dim, output_dim):
     model = Sequential()
     model.add(InputLayer(batch_input_shape=(None, input_dim,)))
-    model.add(Dense(64, activation='relu'))
+    model.add(Dense(16, activation='relu'))
     model.add(Dense(output_dim))
     return model
 
@@ -42,6 +43,20 @@ def dnn_model(input_dim, output_dim):
     model.add(Dropout(0.3))
     model.add(Dense(output_dim))
     return model 
+
+def lstm_model(batch_size, time_steps, input_dim, output_dim):
+    #LSTM unnecessary but wanted to see how the model performed.
+    from keras.layers import LSTM
+    model = Sequential()
+    model.add(LSTM(64, 
+                   batch_input_shape=(1, time_steps, input_dim),
+                   return_sequences=True,
+                   stateful=True))
+    model.add(LSTM(64, 
+                   batch_input_shape=(1, time_steps, input_dim),
+                   stateful=True))
+    model.add(Dense(output_dim))
+    return model
 
 def main():
     parser = argparse.ArgumentParser()
@@ -69,13 +84,31 @@ def main():
     #Get dimensions of input to model and num of actions.
     obs_dim = xTr[0].shape[0]
     act_dim = yTr[0].shape[1]
-
-
+    
+    #set batch size
     batch_size = 128
 
+
+    #set flag to true, if you are using LSTM.
+    lstm_flag = False
+    timesteps = 0
+    if lstm_flag:
+        #TODO: is the shape of data correct?
+        #https://keras.io/getting-started/faq/#how-can-i-use-stateful-rnns
+        timesteps = 1
+
+        #for statefulness in LSTM
+        batch_size = 1
+
+        #reshape inputs, for use in LSTM model
+        xTr = lstm_reshape(xTr, timesteps, obs_dim)
+        xTe = lstm_reshape(xTe, timesteps, obs_dim)
+
+
     #define model - select which model to use.
-    model = base_model(obs_dim, act_dim)
+    #model = base_model(obs_dim, act_dim)
     #model = dnn_model(obs_dim, act_dim)
+    #model = lstm_model(batch_size, timesteps, obs_dim, act_dim)
 
     print('Model initiated') 
     model.compile(optimizer='rmsprop', loss='mse')
@@ -91,7 +124,7 @@ def main():
 
     #need to pass mean and std of train data for normalization when running
     #rollouts of the agent
-    bhclone_logger = CloneStats(args.envname, xTrmean, xTrstd)
+    bhclone_logger = CloneStats(args.envname, xTrmean, xTrstd, timesteps)
 
     if args.log == False:
         cb = [bhclone_logger]
@@ -103,7 +136,7 @@ def main():
     history = model.fit_generator(
                     generate_batches(xTr, yTr, batch_size),
                     callbacks=cb,
-                    epochs=20,
+                    epochs=10,
                     steps_per_epoch=len(xTr)/batch_size,
                     validation_data=generate_batches(xTe, yTe, batch_size),
                     validation_steps=len(xTe))

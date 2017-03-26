@@ -48,3 +48,14 @@ def generate_batches(obs, actions, batch_size):
 
         yield np.asarray(batch_obs), np.asarray(batch_actions)
     
+
+#Helper functions related to LSTM
+def lstm_reshape(data, num_time_steps, num_features):
+    """
+    Reshapes input to fit the required shape by Keras LSTM implementation.
+    :param data: data set of type numpy.darray.
+    :param num_time: number of time steps the features represent.
+    :param num_features: the window size over the sequence.
+    :return: the reshaped data set of shape [batch_size, timesteps, input_dim]
+    """
+    return np.reshape(data, (-1, num_time_steps, num_features))
